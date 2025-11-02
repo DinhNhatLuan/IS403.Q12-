@@ -16,11 +16,6 @@ venv3*/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# === Data files ===
-/Data/
-/Model/
-/Image/
-
 # === Distribution / packaging ===
 build/
 dist/
