@@ -1,0 +1,36 @@
+# === Python cache ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Virtual environment ===
+venv/
+.venv/
+env/
+ENV/
+venv310/
+venv3*/
+*.venv/
+
+# === Jupyter notebooks ===
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# === Data files ===
+/Data/
+/Model/
+/Image/
+
+# === Distribution / packaging ===
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# === Logs / configs ===
+*.log
+*.tmp
+
+# === System files ===
+.DS_Store
+Thumbs.db
