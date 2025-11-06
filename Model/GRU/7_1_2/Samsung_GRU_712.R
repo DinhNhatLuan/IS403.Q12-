@@ -60,7 +60,7 @@ test_ds  <- create_dataset(test, time_step)
 
 # --- TẠO MÔ HÌNH GRU ---
 model <- keras_model_sequential() %>%
-  layer_gru(units = 64, input_shape = c(time_step, 1), return_sequences = FALSE) %>%
+  layer_dnn(units = 64, input_shape = c(time_step, 1), return_sequences = FALSE) %>%
   layer_dense(units = 1)
 
 model %>% compile(

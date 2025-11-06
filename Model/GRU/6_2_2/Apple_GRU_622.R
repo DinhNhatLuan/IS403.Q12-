@@ -1,5 +1,5 @@
 # --- CÀI VÀ GỌI THƯ VIỆN ---
-if(!require(keras)) install.packages("keras"); library(keras)
+if(!require(keras3)) install.packages("keras3"); library(keras3)
 if(!require(tidyverse)) install.packages("tidyverse"); library(tidyverse)
 if(!require(scales)) install.packages("scales"); library(scales)
 
@@ -121,3 +121,5 @@ ggplot() +
     x = "Ngày", y = "Giá (USD)", color = ""
   ) +
   theme_minimal(base_size = 14)
+
+
