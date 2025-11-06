@@ -108,7 +108,7 @@ df_future <- tibble(Date = future_dates, Forecast = future_rescaled)
 
 # --- VẼ BIỂU ĐỒ ---
 ggplot() +
-  geom_line(data = df_actual, aes(x = Date, y = Actual, color = "Thực tế"), size = 1) +
+  geom_line(data = df_actual, aes(x = Date, y = Actual, color = "Thực tế"), linewidth = 1) +
   geom_line(
     data = bind_rows(tail(df_actual, 1), df_future),
     aes(x = Date, y = Forecast, color = "Dự báo (30 ngày tới)"),
