@@ -1,5 +1,5 @@
 # --- CÀI VÀ GỌI THƯ VIỆN ---
-if(!require(keras)) install.packages("keras"); library(keras)
+if(!require(keras3)) install.packages("keras3"); library(keras3)
 if(!require(tidyverse)) install.packages("tidyverse"); library(tidyverse)
 if(!require(scales)) install.packages("scales"); library(scales)
 
