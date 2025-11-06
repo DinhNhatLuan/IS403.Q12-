@@ -2,6 +2,7 @@
 if(!require(keras3)) install.packages("keras3"); library(keras3)
 if(!require(tidyverse)) install.packages("tidyverse"); library(tidyverse)
 if(!require(scales)) install.packages("scales"); library(scales)
+if(!require(lubridate)) install.packages("lubridate"); library(lubridate)
 
 # --- ĐỌC DỮ LIỆU ---
 data <- read.csv("D:/HK5_2025-2026/IS403-PTDLKD/DoAn/Samsung_clean.csv")
@@ -60,7 +61,7 @@ test_ds  <- create_dataset(test, time_step)
 
 # --- TẠO MÔ HÌNH GRU ---
 model <- keras_model_sequential() %>%
-  layer_dnn(units = 64, input_shape = c(time_step, 1), return_sequences = FALSE) %>%
+  layer_gru(units = 64, input_shape = c(time_step, 1), return_sequences = FALSE) %>%
   layer_dense(units = 1)
 
 model %>% compile(
@@ -78,13 +79,42 @@ history <- model %>% fit(
   verbose = 1
 )
 
-# --- DỰ BÁO CHO TẬP TEST ---
-pred_test_scaled <- model %>% predict(test_ds$X)
-
-# --- NGHỊCH CHUẨN HÓA ---
+# --- HÀM NGHỊCH CHUẨN HÓA ---
 inverse_minmax <- function(x) x * (scale_max - scale_min) + scale_min
-pred_test <- inverse_minmax(pred_test_scaled)
-price_rescaled <- inverse_minmax(price_scaled)
+
+# --- DỰ BÁO CHO VAL VÀ TEST ---
+pred_val_scaled <- model %>% predict(val_ds$X)
+pred_val <- as.vector(inverse_minmax(pred_val_scaled))
+actual_val <- inverse_minmax(val_ds$y)
+
+pred_test_scaled <- model %>% predict(test_ds$X)
+pred_test <- as.vector(inverse_minmax(pred_test_scaled))
+actual_test <- inverse_minmax(test_ds$y)
+
+# --- HÀM TÍNH MAPE, RMSE, MSLE ---
+mape <- function(actual, predicted) {
+  mean(abs((actual - predicted) / actual)) * 100
+}
+rmse <- function(actual, predicted) {
+  sqrt(mean((actual - predicted)^2))
+}
+msle <- function(actual, predicted) {
+  mean((log1p(predicted) - log1p(actual))^2)
+}
+
+# --- TÍNH CHỈ SỐ ---
+val_mape  <- mape(actual_val, pred_val)
+val_rmse  <- rmse(actual_val, pred_val)
+val_msle  <- msle(actual_val, pred_val)
+
+test_mape <- mape(actual_test, pred_test)
+test_rmse <- rmse(actual_test, pred_test)
+test_msle <- msle(actual_test, pred_test)
+
+cat("Validation:\n")
+cat(sprintf("MAPE: %.4f%%\nRMSE: %.4f\nMSLE: %.6f\n\n", val_mape, val_rmse, val_msle))
+cat("Test:\n")
+cat(sprintf("MAPE: %.4f%%\nRMSE: %.4f\nMSLE: %.6f\n", test_mape, test_rmse, test_msle))
 
 # --- DỰ BÁO 30 NGÀY TỚI ---
 future_days <- 30
@@ -94,7 +124,7 @@ future_scaled <- c()
 for (i in 1:future_days) {
   x_input <- array(last_seq, dim = c(1, time_step, 1))
   yhat <- model %>% predict(x_input)
-  future_scaled <- c(future_scaled, yhat)
+  future_scaled <- c(future_scaled, as.vector(yhat))
   last_seq <- c(tail(last_seq, time_step - 1), yhat)
 }
 
@@ -104,6 +134,7 @@ future_rescaled <- inverse_minmax(future_scaled)
 future_dates <- seq(from = max(data$Date) + 1, by = "day", length.out = future_days)
 
 # --- GHÉP DỮ LIỆU ---
+price_rescaled <- inverse_minmax(price_scaled)
 df_actual <- tibble(Date = data$Date, Actual = price_rescaled)
 df_future <- tibble(Date = future_dates, Forecast = future_rescaled)
 
