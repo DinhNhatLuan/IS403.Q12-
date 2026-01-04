@@ -14,7 +14,7 @@
 -    **Năm học:** Học Kỳ 2 (2024 - 2025) 
 
 
-## Thông tin nhóm 04
+## Thông tin nhóm
 | STT | MSSV     | Họ và Tên           |Vai trò           | Email                  |
 | :-- | :------- | :----------------   | :--------------- | :--------------------- |
 | 1   | 23520926 | Hoàng Lê Nhật Minh  | Nhóm trưởng      | 23520926@gm.uit.edu.vn |
