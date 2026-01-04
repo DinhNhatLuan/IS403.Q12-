@@ -10,7 +10,7 @@
 ## Giới thiệu môn
 -    **Tên môn học:** Phân tích dữ liệu kinh doanh
 -    **Mã môn học:** IS403
--    **Mã lớp:** IS403.O21
+-    **Mã lớp:** IS403.Q12
 -    **Năm học:** Học Kỳ 2 (2024 - 2025) 
 
 
